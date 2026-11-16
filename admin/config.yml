@@ -1,0 +1,45 @@
+# Sveltia CMS settings. See https://github.com/sveltia/sveltia-cms
+backend:
+  name: github
+  repo: majoriecaillot/why-not-now
+  branch: main
+  base_url: https://AUTH_HOST # TODO: where the sveltia-cms-auth sign-in helper runs
+
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+collections:
+  - name: posts
+    label: Daily reflections
+    label_singular: Reflection
+    folder: content/posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: [date, title]
+    summary: "{{date}} · {{title}}"
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: date
+        label: Date
+        widget: datetime
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        default: "{{now}}"
+      - name: summary
+        label: Short summary
+        widget: text
+        hint: One or two sentences. This shows on the homepage and when the post is shared on Facebook.
+      - name: image
+        label: Photo (optional)
+        widget: image
+        required: false
+        hint: Shown at the top of the post and when it's shared.
+      - name: body
+        label: Reflection
+        widget: markdown
+      - name: draft
+        label: Save as draft (hidden from the site)
+        widget: boolean
+        default: false
