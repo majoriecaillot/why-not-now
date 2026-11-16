@@ -12,6 +12,7 @@ scripts/build.mjs     build: everything above -> dist/
 admin/                the CMS editor (index.html + config.yml)
 assets/css, js, img   styles, contact-form script, site images
 assets/uploads/       photos uploaded through the CMS
+.github/workflows/    GitHub Pages build and deploy
 docs/HOW-TO-POST.md   guide for Majorie
 ```
 
@@ -22,32 +23,40 @@ npm install
 npm run preview      # builds into dist/ and serves it at http://localhost:8000
 ```
 
-Set `SITE_URL` (e.g. `SITE_URL=https://example.com npm run build`) so shared posts
-get full image URLs for Facebook previews.
+The deploy workflow sets `SITE_URL` to the Pages address, so shared posts get full
+image URLs for Facebook previews.
 
 ## How posting works
 
-1. Majorie opens `/admin`, signs in with GitHub and writes a post.
-2. Sveltia (running entirely in her browser) commits a Markdown file to
-   `content/posts/` through the GitHub API.
-3. The static host sees the commit, runs `npm run build` and publishes `dist/`.
+Live site: https://majoriecaillot.github.io/why-not-now/ (editor at `/admin/`).
 
-The only server piece is the OAuth sign-in helper,
-[sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth). GitHub needs a
-client secret to finish a login, and that secret can't live in the browser.
+1. Majorie opens `/admin/` and writes a post.
+2. Sveltia, running entirely in her browser, commits a Markdown file to
+   `content/posts/` through the GitHub API.
+3. `.github/workflows/deploy.yml` runs `npm run build` and publishes `dist/` to
+   GitHub Pages, so the post is live a couple of minutes later.
+
+There is no server. Sign-in uses Sveltia's **Sign In Using Access Token** with a
+fine-grained GitHub token limited to this one repo. Other devices are added with
+**Sign In with Mobile** (QR code) from a signed-in device. The token lives only in
+the browser's local storage; never commit it.
 
 ### Setup checklist
 
-- [ ] Create the GitHub repo and push this project; add Majorie as a collaborator.
-- [ ] Create a GitHub OAuth App (callback: `https://<auth host>/callback`).
-- [ ] Deploy sveltia-cms-auth (Cloudflare Worker or similar) with the app's client
-      ID/secret, and `ALLOWED_DOMAINS` set to the site's domain.
-- [ ] Fill in `repo` and `base_url` in `admin/config.yml` (marked TODO).
-- [ ] Connect the repo to the host (e.g. Cloudflare Pages): build command
-      `npm run build`, output directory `dist`, env `SITE_URL`.
-- [ ] Point the domain at the host, then retire the WordPress site.
+- [x] Repo `majoriecaillot/why-not-now` created and pushed.
+- [ ] As Majorie: **Settings → Pages → Build and deployment → Source: GitHub
+      Actions**, then re-run the "Deploy to GitHub Pages" workflow.
+- [ ] As Majorie: create a fine-grained token (Settings → Developer settings →
+      Fine-grained tokens): repository access **Only select repositories →
+      why-not-now**, permission **Contents: Read and write**. Store it in her
+      password manager.
+- [ ] Sign her in at `/admin/` with that token, then **Sign In with Mobile** for her phone.
+- [ ] Custom domain (later): add it under Settings → Pages, update `site_url` /
+      `display_url` in `admin/config.yml`, then retire the WordPress site.
 
-To try the editor before sign-in exists: run `npm run preview`, open
+When the token expires, create a new one the same way and sign in again.
+
+To try the editor locally without a token: run `npm run preview`, open
 `http://localhost:8000/admin/` in Chrome or Edge, and choose **Work with Local
 Repository**.
 

@@ -2,18 +2,23 @@
 
 You only need a web browser. Nothing to install.
 
-## The first time
+The editor is at **https://majoriecaillot.github.io/why-not-now/admin/**. Bookmark it.
 
-1. Create a free GitHub account at **github.com/signup** if you don't have one, and
-   send your username to Eric so he can give you access.
-2. Accept the email invitation from GitHub.
+## Signing in (once per device)
+
+Eric will sign you in the first time. To add another device later:
+
+- **Your phone or tablet:** on a device that's already signed in, open the editor,
+  click your account picture in the top right, choose **Sign In with Mobile**, and
+  scan the QR code with your phone's camera.
+- **Another computer:** click **Sign In Using Access Token** and paste the access
+  token Eric gave you. Keep that token private, like a password.
 
 ## Every time you post
 
-1. Go to **your-site/admin** (bookmark it).
-2. Click **Sign In with GitHub**. After the first time, you'll usually stay signed in.
-3. Click **Daily reflections** on the left, then **New Reflection**.
-4. Fill in:
+1. Open the editor.
+2. Click **Daily reflections** on the left, then **New Reflection**.
+3. Fill in:
    - **Title**: the name of today's reflection.
    - **Date**: today's date is filled in for you.
    - **Short summary**: one or two sentences. These show on the homepage and when
@@ -21,9 +26,9 @@ You only need a web browser. Nothing to install.
    - **Photo** (optional): click to upload a picture from your computer or phone.
    - **Reflection**: write your post. Use the toolbar for **bold**, *italics*,
      links, quotes and pictures.
-5. Click **Save** at the top.
+4. Click **Save** at the top.
 
-Your post appears on the site about a minute later.
+Your post appears on the site about two minutes later.
 
 ## Good to know
 
