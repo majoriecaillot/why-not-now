@@ -4,15 +4,18 @@ You only need a web browser. Nothing to install.
 
 The editor is at **https://majoriecaillot.github.io/why-not-now/admin/**. Bookmark it.
 
-## Signing in (once per device)
+## Signing in
 
-Eric will sign you in the first time. To add another device later:
+Click **Sign In with GitHub** and log in to GitHub if it asks. The first time, GitHub
+asks you to authorize "Why Not Now Editor"; click **Authorize**.
 
-- **Your phone or tablet:** on a device that's already signed in, open the editor,
-  click your account picture in the top right, choose **Sign In with Mobile**, and
-  scan the QR code with your phone's camera.
-- **Another computer:** click **Sign In Using Access Token** and paste the access
-  token Eric gave you. Keep that token private, like a password.
+You stay signed in. You'll only need to sign in again if you haven't used the editor
+for about six months.
+
+**On your phone or tablet:** open the editor on a computer where you're signed in,
+click your account picture in the top right, choose **Sign In with Mobile**, and scan
+the QR code with your phone's camera. Or just open the editor on your phone and click
+**Sign In with GitHub**.
 
 ## Every time you post
 

@@ -1,7 +1,7 @@
 # Why Not Now — static site
 
-A static rebuild of the "Why Not Now" WordPress/Elementor site. There's no server-side
-code. A small Node build turns Markdown posts into plain HTML pages, and Majorie writes
+A static rebuild of the "Why Not Now" WordPress/Elementor site. The site itself has no
+server-side code (only a tiny sign-in helper for the editor, see below). A small Node build turns Markdown posts into plain HTML pages, and Majorie writes
 posts in the browser with [Sveltia CMS](https://github.com/sveltia/sveltia-cms).
 
 ```
@@ -13,6 +13,7 @@ admin/                the CMS editor (index.html + config.yml)
 assets/css, js, img   styles, contact-form script, site images
 assets/uploads/       photos uploaded through the CMS
 .github/workflows/    GitHub Pages build and deploy
+auth/                 sign-in helper for the editor (Cloudflare Worker)
 docs/HOW-TO-POST.md   guide for Majorie
 ```
 
@@ -36,27 +37,38 @@ Live site: https://majoriecaillot.github.io/why-not-now/ (editor at `/admin/`).
 3. `.github/workflows/deploy.yml` runs `npm run build` and publishes `dist/` to
    GitHub Pages, so the post is live a couple of minutes later.
 
-There is no server. Sign-in uses Sveltia's **Sign In Using Access Token** with a
-fine-grained GitHub token limited to this one repo. Other devices are added with
-**Sign In with Mobile** (QR code) from a signed-in device. The token lives only in
-the browser's local storage; never commit it.
+### Sign-in
 
-### Setup checklist
+The editor's **Sign In with GitHub** goes through a small sign-in helper in `auth/`:
+[Sveltia CMS Authenticator](https://github.com/sveltia/sveltia-cms-auth), pinned to
+commit `5822c9f48de9` and unmodified. It runs as the Cloudflare Worker
+`why-not-now-auth` on **Majorie's own Cloudflare account** (not diderisoft), at
+https://why-not-now-auth.majoriecaillot.workers.dev, and only releases sign-ins to
+`majoriecaillot.github.io` (`ALLOWED_DOMAINS` in `auth/wrangler.toml`).
 
-- [x] Repo `majoriecaillot/why-not-now` created and pushed.
-- [ ] As Majorie: **Settings → Pages → Build and deployment → Source: GitHub
-      Actions**, then re-run the "Deploy to GitHub Pages" workflow.
-- [ ] As Majorie: create a fine-grained token (Settings → Developer settings →
-      Fine-grained tokens): repository access **Only select repositories →
-      why-not-now**, permission **Contents: Read and write**. Store it in her
-      password manager.
-- [ ] Sign her in at `/admin/` with that token, then **Sign In with Mobile** for her phone.
+It is backed by the GitHub App **Why Not Now Editor** on her GitHub account, installed
+on this repo only, with Contents read/write. Sign-ins expire after 8 hours and renew
+automatically for up to 6 months.
+
+Secrets (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`) live only in Cloudflare. To
+redeploy or rotate them, use her separate wrangler login on delos, never the default
+one:
+
+```bash
+cd auth
+export XDG_CONFIG_HOME=~/.config/wrangler-majorie CLOUDFLARE_ACCOUNT_ID=a43ebd9df807539c867fb9027d8e8139
+npx wrangler@4.156.1 whoami          # confirm it's her account first
+npx wrangler@4.156.1 deploy
+pbpaste | npx wrangler@4.156.1 secret put GITHUB_CLIENT_SECRET   # after copying a new secret
+```
+
+### Still to do
+
 - [ ] Custom domain (later): add it under Settings → Pages, update `site_url` /
-      `display_url` in `admin/config.yml`, then retire the WordPress site.
+      `display_url` in `admin/config.yml` and `ALLOWED_DOMAINS` in
+      `auth/wrangler.toml` (then redeploy the helper), and retire the WordPress site.
 
-When the token expires, create a new one the same way and sign in again.
-
-To try the editor locally without a token: run `npm run preview`, open
+To try the editor locally without signing in: run `npm run preview`, open
 `http://localhost:8000/admin/` in Chrome or Edge, and choose **Work with Local
 Repository**.
 

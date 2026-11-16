@@ -3,8 +3,8 @@ backend:
   name: github
   repo: majoriecaillot/why-not-now
   branch: main
-  # No OAuth helper: sign in with "Sign In Using Access Token" (a fine-grained
-  # token limited to this repo). See docs/HOW-TO-POST.md.
+  # Sign-in helper (auth/), deployed to Majorie's Cloudflare account.
+  base_url: https://why-not-now-auth.majoriecaillot.workers.dev
 
 site_url: https://majoriecaillot.github.io/why-not-now/
 display_url: https://majoriecaillot.github.io/why-not-now/

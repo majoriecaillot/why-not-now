@@ -1,0 +1,12 @@
+# Sign-in helper for the /admin editor: Sveltia CMS Authenticator
+# Source: https://github.com/sveltia/sveltia-cms-auth at commit 5822c9f48de9 (MIT, unmodified)
+# Deployed to Majorie's own Cloudflare account (not diderisoft).
+name = "why-not-now-auth"
+main = "src/index.js"
+compatibility_date = "2026-11-11"
+workers_dev = true
+
+[vars]
+# Only pages on these hostnames can receive a sign-in token.
+ALLOWED_DOMAINS = "majoriecaillot.github.io"
+# GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET are set as secrets, never committed.
